@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import api from "@/lib/axios"
 
 export default function NetworkPage() {
@@ -82,14 +83,18 @@ export default function NetworkPage() {
                 className="bg-white rounded-xl shadow overflow-hidden flex flex-col items-center pb-4"
               >
                 <div className="w-full h-14 bg-blue-500" />
-                <img
-                  src={u.profilePicture || "/avatar.svg"}
-                  alt={u.name}
-                  className="w-16 h-16 rounded-full border-2 border-white object-cover -mt-8"
-                />
-                <p className="font-semibold text-gray-900 mt-2 text-center px-2">
-                  {u.name}
-                </p>
+                <Link href={`/profile/${u._id}`}>
+                  <img
+                    src={u.profilePicture || "/avatar.svg"}
+                    alt={u.name}
+                    className="w-16 h-16 rounded-full border-2 border-white object-cover -mt-8 hover:opacity-90 transition"
+                  />
+                </Link>
+                <Link href={`/profile/${u._id}`} className="hover:underline">
+                  <p className="font-semibold text-gray-900 mt-2 text-center px-2">
+                    {u.name}
+                  </p>
+                </Link>
                 <p className="text-gray-400 text-xs text-center px-2 mt-1">
                   {u.headline || "No headline"}
                 </p>
