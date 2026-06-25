@@ -9,6 +9,7 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({ name: "", headline: "", profilePicture: "" });
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const setUser = useAuthStore((state) => state.setUser);
   const user = useAuthStore((state) => state.user);
@@ -23,6 +24,24 @@ export default function ProfilePage() {
     };
     fetchProfile();
   }, [user]);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append("image", file)
+      const res = await api.post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      setForm((prev) => ({ ...prev, profilePicture: res.data.data.url }))
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const handleSave = async () => {
     setSaving(true);
@@ -177,13 +196,24 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Profile Picture URL</label>
-              <input
-                value={form.profilePicture}
-                onChange={(e) => setForm({ ...form, profilePicture: e.target.value })}
-                placeholder="https://your-image-url.com/photo.jpg"
-                className="border rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
-              />
+              <label className="text-sm font-medium text-gray-700">Profile Picture</label>
+              <div className="flex items-center gap-3">
+                <img
+                  src={form.profilePicture || "/avatar.svg"}
+                  className="w-12 h-12 rounded-full object-cover border"
+                  onError={(e) => (e.target.src = "/avatar.svg")}
+                />
+                <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg transition">
+                  {uploading ? "Uploading..." : "Choose Photo"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                </label>
+              </div>
             </div>
 
             <div className="flex gap-3 justify-end pt-1">
