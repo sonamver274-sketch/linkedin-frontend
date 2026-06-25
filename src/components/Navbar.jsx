@@ -91,35 +91,48 @@ const Navbar = () => {
       {/* ── MOBILE BOTTOM NAVBAR ── */}
       <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-10">
         <div className="flex justify-around items-center h-14">
-          <Link href={"/"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <Home size={22} />
-            <span>Home</span>
-          </Link>
-          <Link href={"/network"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <Users size={22} />
-            <span>Network</span>
-          </Link>
-          <Link href={"/jobs"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <Briefcase size={22} />
-            <span>Jobs</span>
-          </Link>
-          <Link href={"/messaging"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <MessageSquareDotIcon size={22} />
-            <span>Messaging</span>
-          </Link>
-          <Link href={"/notification"} className="relative flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <Bell size={22} />
-            {unreadCount > 0 && (
-              <span className="absolute top-0 right-3 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
-            )}
-            <span>Alerts</span>
-          </Link>
-          <Link href={"/profile"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
-            <UserCircle2Icon size={22} />
-            <span>Me</span>
-          </Link>
+          {!user ? (
+            <>
+              <Link href={"/login"} className="flex-1 flex flex-col items-center justify-center text-gray-600 text-xs gap-0.5">
+                <span className="font-semibold text-blue-600 text-sm">Sign in</span>
+              </Link>
+              <Link href={"/register"} className="flex-1 flex flex-col items-center justify-center text-xs gap-0.5">
+                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full font-semibold text-sm">Join now</span>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href={"/"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <Home size={22} />
+                <span>Home</span>
+              </Link>
+              <Link href={"/network"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <Users size={22} />
+                <span>Network</span>
+              </Link>
+              <Link href={"/jobs"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <Briefcase size={22} />
+                <span>Jobs</span>
+              </Link>
+              <Link href={"/messaging"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <MessageSquareDotIcon size={22} />
+                <span>Messaging</span>
+              </Link>
+              <Link href={"/notification"} className="relative flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <Bell size={22} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-3 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+                <span>Alerts</span>
+              </Link>
+              <Link href={"/profile"} className="flex flex-col items-center text-gray-600 text-xs gap-0.5">
+                <UserCircle2Icon size={22} />
+                <span>Me</span>
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </>
