@@ -11,6 +11,8 @@ const typeText = {
 export default function NotificationPage() {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
+  const [accepted, setAccepted] = useState(new Set())
+  const [ignored, setIgnored] = useState(new Set())
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -30,11 +32,7 @@ export default function NotificationPage() {
   const handleAccept = async (senderId, notifId) => {
     try {
       await api.put(`/connection/accept/${senderId}`)
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n._id === notifId ? { ...n, accepted: true } : n
-        )
-      )
+      setAccepted((prev) => new Set([...prev, notifId]))
     } catch (err) {
       console.error(err)
     }
@@ -43,11 +41,7 @@ export default function NotificationPage() {
   const handleIgnore = async (senderId, notifId) => {
     try {
       await api.put(`/connection/remove/${senderId}`)
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n._id === notifId ? { ...n, ignored: true } : n
-        )
-      )
+      setIgnored((prev) => new Set([...prev, notifId]))
     } catch (err) {
       console.error(err)
     }
@@ -101,7 +95,7 @@ export default function NotificationPage() {
                   </span>
                 </div>
 
-                {n.type === "connection_request" && !n.accepted && !n.ignored && (
+                {n.type === "connection_request" && !accepted.has(n._id) && !ignored.has(n._id) && (
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={() => handleAccept(n.sender._id, n._id)}
@@ -118,10 +112,10 @@ export default function NotificationPage() {
                   </div>
                 )}
 
-                {n.accepted && (
+                {accepted.has(n._id) && (
                   <p className="text-xs text-green-600 font-medium mt-2">✓ Connected</p>
                 )}
-                {n.ignored && (
+                {ignored.has(n._id) && (
                   <p className="text-xs text-gray-400 mt-2">Ignored</p>
                 )}
               </div>

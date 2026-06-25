@@ -7,10 +7,12 @@ import { Image, FileText } from "lucide-react"
 const Post = ({ onPostCreated }) => {
   const [content, setContent] = useState("")
   const [focused, setFocused] = useState(false)
+  const [posting, setPosting] = useState(false)
   const user = useAuthStore((state) => state.user)
 
   const handlePost = async () => {
-    if (!content.trim()) return
+    if (!content.trim() || posting) return
+    setPosting(true)
     try {
       const res = await api.post("/post/create", { content })
       setContent("")
@@ -18,6 +20,8 @@ const Post = ({ onPostCreated }) => {
       if (onPostCreated) onPostCreated(res.data.data.post)
     } catch (error) {
       console.log(error)
+    } finally {
+      setPosting(false)
     }
   }
 
@@ -64,10 +68,10 @@ const Post = ({ onPostCreated }) => {
               </button>
               <button
                 onClick={handlePost}
-                disabled={!content.trim()}
+                disabled={!content.trim() || posting}
                 className="px-5 py-1.5 rounded-full text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
-                Post
+                {posting ? "Posting..." : "Post"}
               </button>
             </div>
           </div>
