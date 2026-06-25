@@ -12,11 +12,15 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* dark mode disable kiya — app hamesha light mode mein rahega */
+
+input, textarea, select {
+  color: #111111;
+  background-color: #ffffff;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280;
 }
 
 body {
