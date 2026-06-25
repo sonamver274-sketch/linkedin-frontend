@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import api from "@/lib/axios";
-import { Pencil, Users, Briefcase, X } from "lucide-react";
+import { Pencil, Users, Briefcase, X, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -13,6 +15,14 @@ export default function ProfilePage() {
 
   const setUser = useAuthStore((state) => state.setUser);
   const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try { await api.delete("/auth/logout") } catch {}
+    logout()
+    router.push("/login")
+  };
 
   useEffect(() => {
     if (!user?._id) return;
@@ -84,13 +94,22 @@ export default function ProfilePage() {
                   className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-md"
                 />
               </div>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="mb-1 flex items-center gap-2 border border-blue-600 text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-blue-50 transition"
-              >
-                <Pencil size={14} />
-                Edit Profile
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="mb-1 flex items-center gap-2 border border-blue-600 text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-blue-50 transition"
+                >
+                  <Pencil size={14} />
+                  Edit Profile
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="mb-1 flex items-center gap-2 border border-red-400 text-red-400 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-red-50 transition"
+                >
+                  <LogOut size={14} />
+                  Logout
+                </button>
+              </div>
             </div>
 
             <h1 className="text-2xl font-bold text-gray-900 leading-tight">{profile.name}</h1>
