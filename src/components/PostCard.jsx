@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import Link from "next/link"
 import api from "@/lib/axios"
 import useAuthStore from "@/store/authStore"
 import { ThumbsUp, MessageSquare, Trash2 } from "lucide-react"
@@ -64,13 +65,17 @@ export default function PostCard({ post, onDelete }) {
       {/* Author */}
       <div className="flex items-start justify-between px-4 pt-4 pb-3">
         <div className="flex items-center gap-3">
-          <img
-            src={post.author?.profilePicture || "/avatar.svg"}
-            alt={post.author?.name}
-            className="w-11 h-11 rounded-full object-cover"
-          />
+          <Link href={`/profile/${post.author?._id}`}>
+            <img
+              src={post.author?.profilePicture || "/avatar.svg"}
+              alt={post.author?.name}
+              className="w-11 h-11 rounded-full object-cover hover:opacity-90 transition"
+            />
+          </Link>
           <div>
-            <p className="font-semibold text-gray-900 text-sm leading-tight">{post.author?.name}</p>
+            <Link href={`/profile/${post.author?._id}`}>
+              <p className="font-semibold text-gray-900 text-sm leading-tight hover:underline cursor-pointer">{post.author?.name}</p>
+            </Link>
             <p className="text-xs text-gray-400 leading-tight">{post.author?.headline || ""}</p>
             <p className="text-xs text-gray-400 mt-0.5">{timeAgo(post.createdAt)}</p>
           </div>
