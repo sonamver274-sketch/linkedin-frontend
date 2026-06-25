@@ -93,19 +93,19 @@ export default function ProfilePage() {
                   className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-md"
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-1">
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="mb-1 flex items-center gap-2 border border-blue-600 text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-blue-50 transition"
+                  className="flex items-center gap-1 border border-blue-600 text-blue-600 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-blue-50 transition whitespace-nowrap"
                 >
-                  <Pencil size={14} />
-                  Edit Profile
+                  <Pencil size={12} />
+                  Edit
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="mb-1 flex items-center gap-2 border border-red-400 text-red-400 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-red-50 transition"
+                  className="flex items-center gap-1 border border-red-400 text-red-400 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-red-50 transition whitespace-nowrap"
                 >
-                  <LogOut size={14} />
+                  <LogOut size={12} />
                   Logout
                 </button>
               </div>
