@@ -4,7 +4,6 @@ import useAuthStore from "@/store/authStore";
 import api from "@/lib/axios";
 import { Pencil, Users, Briefcase, X, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-import api from "@/lib/axios";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
