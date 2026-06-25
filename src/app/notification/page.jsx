@@ -3,9 +3,9 @@ import { useEffect, useState } from "react"
 import api from "@/lib/axios"
 
 const typeText = {
-  connection_request: "ne tumhe connection request bheji",
-  like: "ne tumhari post like ki",
-  comment: "ne tumhari post pe comment kiya"
+  connection_request: "sent you a connection request",
+  like: "liked your post",
+  comment: "commented on your post"
 }
 
 export default function NotificationPage() {
@@ -27,6 +27,32 @@ export default function NotificationPage() {
     fetchNotifications()
   }, [])
 
+  const handleAccept = async (senderId, notifId) => {
+    try {
+      await api.put(`/connection/accept/${senderId}`)
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n._id === notifId ? { ...n, accepted: true } : n
+        )
+      )
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleIgnore = async (senderId, notifId) => {
+    try {
+      await api.put(`/connection/remove/${senderId}`)
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n._id === notifId ? { ...n, ignored: true } : n
+        )
+      )
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 pt-16 flex items-center justify-center">
@@ -42,36 +68,62 @@ export default function NotificationPage() {
 
         {notifications.length === 0 ? (
           <div className="bg-white rounded-xl shadow p-6 text-center text-gray-400">
-            Koi notification nahi hai abhi
+            No notifications yet
           </div>
         ) : (
           <div className="flex flex-col gap-2">
             {notifications.map((n) => (
               <div
                 key={n._id}
-                className={`flex items-center gap-3 bg-white rounded-xl shadow px-4 py-3 ${!n.read ? "border-l-4 border-blue-500" : ""}`}
+                className={`bg-white rounded-xl shadow px-4 py-3 ${!n.read ? "border-l-4 border-blue-500" : ""}`}
               >
-                <img
-                  src={n.sender?.profilePicture || "/avatar.svg"}
-                  className="w-10 h-10 rounded-full object-cover shrink-0"
-                />
-                <div className="flex-1">
-                  <p className="text-sm text-gray-800">
-                    <span className="font-semibold">{n.sender?.name}</span>{" "}
-                    {typeText[n.type]}
-                  </p>
-                  {n.post?.content && (
-                    <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">
-                      "{n.post.content}"
+                <div className="flex items-center gap-3">
+                  <img
+                    src={n.sender?.profilePicture || "/avatar.svg"}
+                    className="w-10 h-10 rounded-full object-cover shrink-0"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-800">
+                      <span className="font-semibold">{n.sender?.name}</span>{" "}
+                      {typeText[n.type]}
                     </p>
-                  )}
+                    {n.post?.content && (
+                      <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">
+                        "{n.post.content}"
+                      </p>
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-400 shrink-0">
+                    {new Date(n.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short"
+                    })}
+                  </span>
                 </div>
-                <span className="text-xs text-gray-400 shrink-0">
-                  {new Date(n.createdAt).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short"
-                  })}
-                </span>
+
+                {n.type === "connection_request" && !n.accepted && !n.ignored && (
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() => handleAccept(n.sender._id, n._id)}
+                      className="px-5 py-1.5 text-sm bg-blue-600 text-white rounded-full hover:bg-blue-700 font-medium"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleIgnore(n.sender._id, n._id)}
+                      className="px-5 py-1.5 text-sm border border-gray-400 text-gray-500 rounded-full hover:bg-gray-100 font-medium"
+                    >
+                      Ignore
+                    </button>
+                  </div>
+                )}
+
+                {n.accepted && (
+                  <p className="text-xs text-green-600 font-medium mt-2">✓ Connected</p>
+                )}
+                {n.ignored && (
+                  <p className="text-xs text-gray-400 mt-2">Ignored</p>
+                )}
               </div>
             ))}
           </div>
