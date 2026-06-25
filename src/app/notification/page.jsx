@@ -49,14 +49,14 @@ export default function NotificationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 md:pt-16 flex items-center justify-center">
         <p className="text-gray-500">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen bg-gray-100 md:pt-16">
       <div className="max-w-2xl mx-auto px-4 py-6">
         <h1 className="text-xl font-bold text-gray-800 mb-4">Notifications</h1>
 

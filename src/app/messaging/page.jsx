@@ -152,7 +152,7 @@ export default function MessagingPage() {
   )
 
   return (
-    <div className="h-screen bg-gray-100 pt-14 flex overflow-hidden">
+    <div className="fixed top-14 bottom-14 md:bottom-0 left-0 right-0 bg-gray-100 flex overflow-hidden">
 
       {/* MOBILE: show contacts OR conversation, not both */}
       <div className="flex w-full md:hidden h-full">

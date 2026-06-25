@@ -24,7 +24,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#f3f2ef] pt-16">
+    <div className="min-h-screen bg-[#f3f2ef] md:pt-16">
       <div className="max-w-6xl mx-auto px-4 py-6 flex gap-5">
 
         {/* ── LEFT SIDEBAR ── */}

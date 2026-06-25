@@ -80,14 +80,14 @@ export default function JobsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 md:pt-16 flex items-center justify-center">
         <p className="text-gray-500">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen bg-gray-100 md:pt-16">
       <div className="max-w-4xl mx-auto px-4 py-6">
 
         {/* Header */}

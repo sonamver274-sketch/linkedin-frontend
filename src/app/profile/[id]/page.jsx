@@ -25,14 +25,14 @@ export default function UserProfilePage() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gray-100 pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 md:pt-16 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#f3f2ef] pt-16">
+    <div className="min-h-screen bg-[#f3f2ef] md:pt-16">
       <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-3">
 
         {/* ── MAIN CARD ── */}
